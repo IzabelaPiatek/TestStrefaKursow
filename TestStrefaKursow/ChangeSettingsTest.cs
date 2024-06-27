@@ -1,16 +1,19 @@
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TestStrefaKursow
 {
-    public class LoginTest
+    internal class ChangeSettingsTest
     {
-
         private IWebDriver driver;
         private LoginPage login;
         private HomePage home;
-
+        private SettingsPage settings;
 
         [SetUp]
         public void Setup()
@@ -21,29 +24,32 @@ namespace TestStrefaKursow
 
             login = new LoginPage(driver);
             home = new HomePage(driver);
-           
-        }
+            settings = new SettingsPage(driver);
 
-        [Test]
-        public void Login()
-        {
             login.GoToPrivacyPolicy();
             login.GoToNewsletter();
             login.GoToLogin();
             login.LoginToApp("automationtestik@gmail.com", "Selenium123@");
 
-            home.GoToUserName();
-            var actualResult = "Test Test";
-            var expectedResult = home.NameToText;
+        }
+        [Test]
+        public void ChangeSettings()
+        {
+            home.NavigateToSettingsPage();
+            settings.FillDataToFV("Firma Krzak","9090909090","Poznańska","24","45-455","Poznań"); 
+
+            settings.CheckSaveChanges();
+            
+            var actualResult = "Zmiany zapisane";
+            var expectedResult = settings.PopUPSaveChangeToText;
 
             Assert.That(actualResult, Is.EqualTo(expectedResult));
-
         }
-
         [TearDown]
         public void QuitDriver()
         {
             driver.Quit();
         }
     }
+
 }

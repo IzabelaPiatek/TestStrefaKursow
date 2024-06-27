@@ -23,9 +23,10 @@ namespace TestStrefaKursow
         private IWebElement BtnLogin => driver.FindElement(login);
 
         private By privacyPolicy = By.CssSelector("button[class='cm-btn cm-btn-success cm-btn-accept-all']");
+        private IWebElement PrivacyPolicyBtn => driver.FindElement(privacyPolicy);
+        
         private By newsletter = By.CssSelector("span[class='b-newsletter-popup__no u-mr-25']");
 
-        private IWebElement PrivacyPolicyBtn => driver.FindElement(privacyPolicy);
         private IWebElement NewsletterBtn => driver.FindElement(newsletter);
 
         private By email = By.Id("customer_login");
@@ -52,12 +53,6 @@ namespace TestStrefaKursow
             PrivacyPolicyBtn.Click();
         }
 
-        protected void WaitUntilElementNotVisible(By searchElementBy, int timeoutInSeconds)
-        {
-            new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds))
-                            .Until(drv => !IsElementVisible(searchElementBy));
-        }
-
         private bool IsElementVisible(By searchElementBy)
         {
             try
@@ -73,11 +68,10 @@ namespace TestStrefaKursow
 
         public void GoToNewsletter()
         {
-            //var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(14));
-            //wait.Until(c => c.FindElement(newsletter));
-            WaitUntilElementNotVisible(newsletter,10);
-            if(IsElementVisible(newsletter))
-            NewsletterBtn.Click();
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(8));
+            wait.Until(c => c.FindElement(newsletter));
+            if (IsElementVisible(newsletter))
+                NewsletterBtn.Click();
         }
 
         public void LoginToApp(string email, string passwd)

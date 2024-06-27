@@ -22,11 +22,25 @@ namespace TestStrefaKursow
 
         public string NameToText => Name.Text;
 
+        private By arrowDown = By.CssSelector("i[class='a-arrow-down--blue']");
+        private IWebElement BtnArrow => driver.FindElement(arrowDown);
+                
+        private By settings = By.XPath("//*[@class='b-user-menu-dropdown']/ul/a[2]");
+        private IWebElement BtnSettings => driver.FindElement(settings);
+
+
         public void GoToUserName()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
             wait.Until(c => c.FindElement(name));
-            
+        }
+
+        public void NavigateToSettingsPage()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+            wait.Until(c => c.FindElement(arrowDown));
+            BtnArrow.Click();
+            BtnSettings.Click();
         }
 
     }
